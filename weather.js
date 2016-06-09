@@ -1,4 +1,5 @@
 var infoWindows = [];
+
 var cityIds = [
   4180439,
   5128638,
@@ -22,18 +23,25 @@ var cityIds = [
 ];
 
 var app = angular.module('weatherApp', ['ngRoute']);
-var cities = [];
 
-app.controller('MainController', function($scope, $http) {
-  $http({
-    url: "http://api.openweathermap.org/data/2.5/group",
-    params: {
-      id: cityIds.join(','),
-      units: 'imperial',
-      APPID: 'eac2948bfca65b78a8c5564ecf91d00e'
+app.factory('weather', function($http) {
+  var APPID = 'eac2948bfca65b78a8c5564ecf91d00e';
+  return {
+    getWeatherById: function(cityIds, callback) {
+      $http({
+        url: "http://api.openweathermap.org/data/2.5/group",
+        params: {
+          id: cityIds.join(','),
+          units: 'imperial',
+          APPID: APPID
+        }
+      }).success(callback);
     }
-  })
-  .success(function(data) {
+  };
+});
+
+app.controller('MainController', function($scope, $http, weather) {
+  weather.getWeatherById(cityIds, function callback(data) {
     $scope.weather = data.results;
     console.log(data);
     var result = data.list;
@@ -41,12 +49,14 @@ app.controller('MainController', function($scope, $http) {
 
     var markers = result.map(function(result) {
       var position = {lat: result.coord.lat, lng: result.coord.lon};
+
       var image = {
         url: "http://openweathermap.org/img/w/" + result.weather[0].icon + ".png",
         size: new google.maps.Size(50, 50),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(25, 25),
       };
+
       var marker = new google.maps.Marker({
         position: position,
         map: map,
@@ -58,24 +68,26 @@ app.controller('MainController', function($scope, $http) {
         hideAllInfoWindows();
         infoWindow.open(map, marker);
       });
+
       var contentString = "<ul style='list-style: none;'><li><h3>" + result.name + "</h3></li><li> Temperature: " + result.main.temp + "°</li><li>Humidity: " + result.main.humidity + "%</li><li>High: " + result.main.temp_max + "°</li><li>Low: " + result.main.temp_min + "°</li></ul>";
+
       var infoWindow = new google.maps.InfoWindow({
         content: contentString,
       });
       infoWindows.push(infoWindow);
+
       function hideAllInfoWindows() {
         infoWindows.forEach(function(infoWindow) {
           infoWindow.close();
         });
       }
-      function openWindow (){
 
+      function openWindow (){
       }
+
       return marker;
     });
   });
-
-
 
   var map = new google.maps.Map(document.getElementById('map'), {
   zoom: 4,
