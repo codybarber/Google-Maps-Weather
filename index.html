@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>GoogleMaps</title>
+    <title>Weather Map</title>
     <script src="angular.js"></script>
     <script src="angular-route.js"></script>
     <script
@@ -11,12 +11,9 @@
     <script src="weather.js"></script>
     <link rel="stylesheet" href="weather.css">
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Quicksand:700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:700" rel="stylesheet" type="text/css">
     </head>
-  <body  ng-app="weatherApp" ng-controller= "MainController">
-    <div id="map"></div>
-    <div class="sidebar" ng-click="openWindow()">
-      <div ng-repeat="result in results"><h4>{{result.name}}</h4><img class="icon" ng-src="http://openweathermap.org/img/w/{{result.weather[0].icon}}.png"><br>{{result.weather[0].description}}<br>Temp: {{result.main.temp}}°<br>Humidity: {{result.main.humidity}}%<br>-----------------------<br></div>
-    </div>
+  <body ng-app="weatherApp">
+    <ng-view></ng-view>
   </body>
 </html>

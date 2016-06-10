@@ -32,13 +32,13 @@ li {
 h4 {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
-  margin-bottom: -8px;
   text-shadow: 2px 2px 2px grey;
+  margin-bottom: -1px;
 }
 
 .icon {
-  height: 20%;
-  width: 20%;
+  height: 10%;
+  width: 10%;
   max-width: 300px;
   max-height: 300px;
   margin-bottom: -5px;
