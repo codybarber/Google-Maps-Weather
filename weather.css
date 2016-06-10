@@ -54,7 +54,11 @@ h4 {
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2
+  background-color: #E5E5E5;
+}
+
+tr:nth-child(odd) {
+  background-color: #CCCCCC;
 }
 
 th {
@@ -63,4 +67,8 @@ th {
 
 a {
   text-align: center;
+}
+
+h1 {
+  margin-bottom: 2px;
 }
