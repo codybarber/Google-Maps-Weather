@@ -1,10 +1,21 @@
-<div class="sidebar">
-  <h3>Forecast Page</h3>
-  <table>
-    <tr ng-repeat="aForecast in forecastList">
-      <td>{{aForecast.dt * 1000 | date: 'MM-dd hh:mm'}}</td>
-      <td>{{aForecast.main.temp}}°</td>
-      <td><img ng-src="http://openweathermap.org/img/w/{{aForecast.weather[0].icon}}.png"></td>
+<div class="forecast">
+  <h1>5 Day Forecast</h1>
+  <a href="#/"><button type="button" name="button">Back to Map</button></a>
+  <table id="forecastTable" style="width: 100%">
+    <tr>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Temperature</th>
+      <th>Wind Speed</th>
+      <th>Humidity</th>
+    </tr>
+    <tr ng-repeat="forecast in forecasts">
+      <td>{{forecast.dt * 1000 | date: 'EEEE, MM/dd, hh:mm a'}}</td>
+      <td>{{forecast.weather[0].description}}</td>
+      <td>{{forecast.main.temp}}°</td>
+      <td>{{forecast.wind.speed}} mph</td>
+      <td>{{forecast.main.humidity}}%</td>
     </tr>
   </table>
+  <a href="#/"><button type="button" name="button">Back</button></a>
 </div>

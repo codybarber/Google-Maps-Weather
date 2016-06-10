@@ -2,5 +2,5 @@
 <div class="sidebar">
   <div ng-repeat="result in results" ng-click="openInfoWindow(result)"><h4>{{result.name}}</h4><img class="icon" ng-show="result.main.temp > 80" src="hot.png"/>
      <img class="icon" ng-show="(result.main.temp >= 60 && result.main.temp <= 80)" src="normal.png"/>
-     <img class="icon" ng-show="result.main.temp < 60" src="cold.png"/><br>{{result.weather[0].description}}<br>Temp: {{result.main.temp}}°<br>Humidity: {{result.main.humidity}}%<br>-----------------------<br></div>
+     <img class="icon" ng-show="result.main.temp < 60" src="cold.png"/><br>{{result.weather[0].description}}<br>Temp: {{result.main.temp}}°<br>Humidity: {{result.main.humidity}}%<br><a href="#/city/{{result.id}}">5 Day Forecast</a><br>-----<br></div>
 </div>

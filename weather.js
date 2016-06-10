@@ -1,5 +1,3 @@
-var infoWindows = [];
-
 var cityIds = [
   4180439,
   5128638,
@@ -91,11 +89,35 @@ app.config(function($routeProvider) {
       controller: 'MainController',
       templateUrl: 'main.html'
     })
-    .when('/:cityId', {
+    .when('/city/:cityId', {
       controller: 'ForecastController',
       templateUrl: 'forecast.html'
-    })
+    });
 });
+
+app.controller('ForecastController', function($scope, $routeParams, weather) {
+  var cityId = $routeParams.cityId;
+  weather.getForecastForCity(cityId, function(data) {
+    $scope.forecasts = data.list;
+    console.log($scope.forecasts);
+  });
+});
+
+app.controller('MainController', function($scope, weather, googleMap) {
+
+  $scope.openInfoWindow = function(result) {
+    googleMap.openInfoWindow(result);
+  };
+
+  weather.getWeatherById(cityIds, function(data) {
+    var results = data.list;
+    $scope.results = results;
+    googleMap.plotData(results);
+    console.log(data);
+  });
+
+});
+
 
 app.factory('weather', function($http) {
   var APPID = 'bfbabc609e268422c40bfea2b03323c6';
@@ -135,7 +157,7 @@ app.factory('googleMap', function() {
 
   function openInfoWindow(result) {
     var content = "<ul style='list-style: none;'><li><h3>" + result.name + "</h3></li><li> Temperature: " + result.main.temp + "°</li><li>Humidity: " + result.main.humidity + "%</li><li>High: " + result.main.temp_max + "°</li><li>Low: " + result.main.temp_min + "°</li></ul>" +
-    "<a href='#/'" + result.id + "'>Detailed Forecast</a";
+    '<a  href="#/city/' + result.id + '">5 Day Forecast</a>';
     infoWindow.setContent(content);
     var marker = markerDictionary[result.id];
     infoWindow.open(map, marker);
@@ -155,6 +177,7 @@ app.factory('googleMap', function() {
         var marker = new google.maps.Marker({
           anchorPoint: new google.maps.Point(0, -5),
           position: position,
+          title: result.name,
           map: map,
           animation: google.maps.Animation.DROP,
           icon: icon
@@ -171,26 +194,3 @@ app.factory('googleMap', function() {
 
 
 var markerDictionary = {};
-
-app.controller('MainController', function($scope, weather, googleMap) {
-
-  $scope.openInfoWindow = function(result) {
-    googleMap.openInfoWindow(result);
-  };
-
-  weather.getWeatherById(cityIds, function callback(data) {
-    $scope.weather = data.results;
-    console.log(data);
-    var results = data.list;
-    $scope.results = results;
-    googleMap.plotData(results);
-  });
-});
-
-app.controller('ForecastController', function($scope, googleMap, $routeParams, weatherService) {
-  var cityId = $routeParams.cityId;
-  weatherService.getForecastForCity(cityId, function(data) {
-    $scope.forecastList = data.list;
-    console.log($scope.forecastList);
-  });
-});
